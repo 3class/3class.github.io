@@ -36,86 +36,169 @@
   
 </head>
 
-<div class="random-center hide-area">
-  <div id="random-index">
-    <div class="center-field">
-      <img class="avatar" src="https://avatars3.githubusercontent.com/u/16516510?v=3&s=460" width=120 height=120 onClick="openUserCard()">
+<body>
+<div class="side-navigate hide-area">
+  
+    <div class="item prev">
+      <a href="/2015/05/07/test/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        新的
+      </div>
     </div>
-    <div class="center-field">
-      <div class="title" onClick="openUserCard()">tripleday</div>
-      <div class="sub-title" onClick="openUserCard()">Make Yourself Deserve Better</div>
-    </div>
-    <hr >
-    <div class="center-field">
-      <ul class="index-nav-link">
-        
-        
-          
-        
-          
-            <li><a href="/archives">Archives</a></li>
-          
-        
-          
-            <li><a href="/tags">Tags</a></li>
-          
-        
-          
-            <li><a href="/categories">Categories</a></li>
-          
-        
-          
-            <li><a href="/about">About</a></li>
-          
-        
-      </ul>
-      <ul class="social-icon">
   
   
-    <li>
-      <a href="https://github.com/tripleday">
+</div>
+<div id="container" class="hide-area">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
         
-          <i class="icon iconfont github">&#xe606;</i>
+        <a onClick="openUserCard()">
+          <img id="avatar" src="https://avatars3.githubusercontent.com/u/16516510?v=3&s=460"/>
+          <div id="homelink">tripleday</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
         
-      </a>
-    </li>
-  
-    <li>
-      <a href="https://www.zhihu.com/people/wu-hao-tian-73">
         
-          <i class="icon iconfont zhihu">&#xe60b;</i>
+          <li><a href="/">Home</a></li>
         
-      </a>
-    </li>
-  
-    <li>
-      <a href="https://www.facebook.com/haotianwuseu">
+          <li><a href="/archives">Archives</a></li>
         
-          <i class="icon iconfont facebook">&#xe604;</i>
+          <li><a href="/tags">Tags</a></li>
         
-      </a>
-    </li>
-  
-    <li>
-      <a href="https://twitter.com/kjhn15">
+          <li><a href="/categories">Categories</a></li>
         
-          <i class="icon iconfont twitter">&#xe600;</i>
+          <li><a href="/about">About</a></li>
         
-      </a>
-    </li>
-  
-    <li>
-      <a href="http://weibo.com/3241222987">
-        
-          <i class="icon iconfont weibo">&#xe602;</i>
-        
-      </a>
-    </li>
-  
-</ul>
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
+      </div>
     </div>
   </div>
+
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>新的开始</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">Created at 2014-05-07</span>
+      
+        <span id = "post-title-updated">Updated at 2016-06-12</span>
+      
+      
+      <span id = "post-title-categories">Category
+      
+      
+        
+        
+        <a href="/categories/日志/">日志</a>
+      
+      </span>
+      
+      
+      <span id = "post-title-tags">
+      Tag
+      
+      
+        
+        
+        <a href="/tags/开始/">开始</a>
+      
+        
+          /
+        
+        
+        <a href="/tags/我/">我</a>
+      
+        
+          /
+        
+        
+        <a href="/tags/日记/">日记</a>
+      
+      </span>
+      
+    </p>
+    
+    <p>这是<strong>新的开始</strong>，我用hexo创建了第一篇文章。</p>
+<p>通过下面的命令，就可以创建新文章<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">D:\workspace\javascript\nodejs-hexo&gt;hexo new 新的开始</span><br><span class="line">[info] File created at D:\workspace\javascript\nodejs-hexo\<span class="built_in">source</span>\_posts\新的开始.md</span><br></pre></td></tr></table></figure></p>
+<p>感觉非常好。</p>
+
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
+  <div class="random-toc">
+    <h2>Table of Content</h2>
+    
+  </div>
 </div>
+
+  
+<nav id="pagination">
+  
+    <a href="/2015/05/07/test/" class="prev">&larr; Prev post 新的</a>
+  
+
+  
+
+  
+</nav>
+
+
+      
+      
+      
+      <div id="disqus_thread"></div>
+      
+    </div>
+  </div>
+
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      Site by Haotian Wu using
+      <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
+      <br>
+      
+    </div>
+  </div>
+  </div>
+
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//tripleday.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
 <div id="user-card">
   <div class="center-field">
     <img class="avatar" src="https://avatars3.githubusercontent.com/u/16516510?v=3&s=460">
