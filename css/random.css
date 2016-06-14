@@ -514,7 +514,7 @@ article img {
   overflow-y: auto;
 }
 .random-toc ol {
-  padding-left: 5px;
+  padding-left: 15px;
 }
 .random-toc h2 {
   text-align: center;
@@ -523,7 +523,10 @@ article img {
   color: #bbb;
   display: block;
 }
-.random-toc li:hover {
+.toc-text {
+  display: block;
+}
+.toc-text:hover {
   background-color: #666;
 }
 .btn-hide-toc {
@@ -537,6 +540,12 @@ article img {
 }
 .btn-hide-toc:hover {
   background-color: #888;
+}
+figure.highlight {
+  margin: 0px 5px 0px 5px;
+}
+figure.highlight td.gutter {
+  padding-right: 20px;
 }
 @media (max-width: 1060px) {
   .side-navigate {
