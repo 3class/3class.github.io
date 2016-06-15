@@ -8,7 +8,7 @@
 <!doctype html>
 <html lang="">
 <head>
-  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <meta name="author" content="Haotian Wu">
@@ -40,12 +40,12 @@ iFr...">
 <link rel="stylesheet" href="/css/jquery.fancybox.css">
 <link rel="stylesheet" href="/css/iconfont/iconfont.css">
 <link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
-<link rel="stylesheet" href="/css/plyr.css">
+<link rel="stylesheet" href="/css/plyr.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 </head>
 
 <body>
-<div class="side-navigate hide-area">
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="side-navigate hide-area">
   
   
 </div>
@@ -144,6 +144,7 @@ iFr...">
 <h1 id="Picture-Test"><a href="#Picture-Test" class="headerlink" title="Picture Test:"></a>Picture Test:</h1><p><img src="http://i.imgur.com/woaa6Rc.jpg" alt=""></p>
 <h1 id="Youtube-Test"><a href="#Youtube-Test" class="headerlink" title="Youtube Test:"></a>Youtube Test:</h1><div class="video-container"><iframe src="//www.youtube.com/embed/https://youtu.be/mf5qPrnNGgY" frameborder="0" allowfullscreen></iframe></div>
 <h1 id="Youku-Test"><a href="#Youku-Test" class="headerlink" title="Youku Test:"></a>Youku Test:</h1><div class="video-container"><iframe height="480" width="100%" src="http://player.youku.com/embed/XMTQ2MjU2NTU2OA" frameborder="0" allowfullscreen></iframe></div>
+<p>$$<br>\frac{\partial u}{\partial t}<br>= h^2 \left( \frac{\partial^2 u}{\partial x^2} +<br>\frac{\partial^2 u}{\partial y^2} +<br>\frac{\partial^2 u}{\partial z^2}\right)<br>$$</p>
 
   </article>
   <div class="random-toc-area">
@@ -366,7 +367,24 @@ $(".video-container iframe").each(function(i){
   $(this).parent().html(plyrContainer);
 });
 plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
 </script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 </body>
 </html>
 

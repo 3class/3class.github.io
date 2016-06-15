@@ -20,17 +20,12 @@
 <h1 id="Picture-Test"><a href="#Picture-Test" class="headerlink" title="Picture Test:"></a>Picture Test:</h1><p><img src="http://i.imgur.com/woaa6Rc.jpg" alt=""></p>
 <h1 id="Youtube-Test"><a href="#Youtube-Test" class="headerlink" title="Youtube Test:"></a>Youtube Test:</h1><div class="video-container"><iframe src="//www.youtube.com/embed/https://youtu.be/mf5qPrnNGgY" frameborder="0" allowfullscreen></iframe></div>
 <h1 id="Youku-Test"><a href="#Youku-Test" class="headerlink" title="Youku Test:"></a>Youku Test:</h1><div class="video-container"><iframe height="480" width="100%" src="http://player.youku.com/embed/XMTQ2MjU2NTU2OA" frameborder="0" allowfullscreen></iframe></div>
+<p>$$<br>\frac{\partial u}{\partial t}<br>= h^2 \left( \frac{\partial^2 u}{\partial x^2} +<br>\frac{\partial^2 u}{\partial y^2} +<br>\frac{\partial^2 u}{\partial z^2}\right)<br>$$</p>
 ]]></content>
     </entry>
     
   
   
-    
-    <entry>
-      <title><![CDATA[Categories]]></title>
-      <url>http://tripleday.github.io/categories/index.html</url>
-      <content type="html"></content>
-    </entry>
     
     <entry>
       <title><![CDATA[About]]></title>
@@ -51,6 +46,12 @@
 </ul>
 <h1 id="Contact"><a href="#Contact" class="headerlink" title="Contact"></a>Contact</h1><p>Just to avoid spams, here is the Base64 code of my e-mail address:<br><code>aGFvdGlhbnd1c2V1QGdtYWlsLmNvbQ==</code></p>
 ]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Categories]]></title>
+      <url>http://tripleday.github.io/categories/index.html</url>
+      <content type="html"></content>
     </entry>
     
     <entry>
