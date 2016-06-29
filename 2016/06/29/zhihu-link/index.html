@@ -150,7 +150,10 @@
 <ul>
 <li>这个爬虫需要自己的知乎cookie才能爬取。建议使用chrome，安装<strong>EditThisCookie</strong>插件，将知乎的cookie复制粘贴到zhihu_cookie.json文件。</li>
 <li>知乎用户的唯一性不是靠用户名，而是html里内嵌隐藏的<strong>data-id</strong>，在ajax获取数据是发送的表单数据里也需要这个值。所以Neo4j中使用此值可以唯一标识用户。</li>
-<li>BeautifulSoup的官方文档里的一张解析器对比表格<br><img src="/uploads/img/20160629/bs.png" alt="BeautifulSoup解析器对比"><br>实际使用钟，在解析<code>https://www.zhihu.com/people/hong-ming-da</code>这条链接时，lxml解析一直都会出错，换成html.parser后解析成功。所以html.parser虽然解析速度慢，但容错性更好一点。</li>
+<li>BeautifulSoup的官方文档里的一张解析器对比表格</li>
+</ul>
+<p><img src="/uploads/img/20160629/bs.png" alt="BeautifulSoup解析器对比"><br>实际使用钟，在解析<code>https://www.zhihu.com/people/hong-ming-da</code>这条链接时，lxml解析一直都会出错，换成html.parser后解析成功。所以html.parser虽然解析速度慢，但容错性更好一点。</p>
+<ul>
 <li>其他的细节想到后再补充。</li>
 </ul>
 <h1 id="爬取结果"><a href="#爬取结果" class="headerlink" title="爬取结果"></a>爬取结果</h1><p>爬虫程序在爬了23928个用户才停下来，即找到了轮子哥。这是爬完的部分用户图：<br><img src="/uploads/img/20160629/whole.png" alt="部分用户关系图"></p>

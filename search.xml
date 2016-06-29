@@ -20,7 +20,10 @@
 <ul>
 <li>这个爬虫需要自己的知乎cookie才能爬取。建议使用chrome，安装<strong>EditThisCookie</strong>插件，将知乎的cookie复制粘贴到zhihu_cookie.json文件。</li>
 <li>知乎用户的唯一性不是靠用户名，而是html里内嵌隐藏的<strong>data-id</strong>，在ajax获取数据是发送的表单数据里也需要这个值。所以Neo4j中使用此值可以唯一标识用户。</li>
-<li>BeautifulSoup的官方文档里的一张解析器对比表格<br><img src="/uploads/img/20160629/bs.png" alt="BeautifulSoup解析器对比"><br>实际使用钟，在解析<code>https://www.zhihu.com/people/hong-ming-da</code>这条链接时，lxml解析一直都会出错，换成html.parser后解析成功。所以html.parser虽然解析速度慢，但容错性更好一点。</li>
+<li>BeautifulSoup的官方文档里的一张解析器对比表格</li>
+</ul>
+<p><img src="/uploads/img/20160629/bs.png" alt="BeautifulSoup解析器对比"><br>实际使用钟，在解析<code>https://www.zhihu.com/people/hong-ming-da</code>这条链接时，lxml解析一直都会出错，换成html.parser后解析成功。所以html.parser虽然解析速度慢，但容错性更好一点。</p>
+<ul>
 <li>其他的细节想到后再补充。</li>
 </ul>
 <h1 id="爬取结果"><a href="#爬取结果" class="headerlink" title="爬取结果"></a>爬取结果</h1><p>爬虫程序在爬了23928个用户才停下来，即找到了轮子哥。这是爬完的部分用户图：<br><img src="/uploads/img/20160629/whole.png" alt="部分用户关系图"></p>
@@ -45,7 +48,7 @@
 <h1 id="PySide"><a href="#PySide" class="headerlink" title="PySide"></a>PySide</h1><p>当然挖坑的第一步就是安装环境了，win7上安装简便得多，但到linux下就没那么舒服了。<br>下面是我在CentOS 6.5和python2.7.11的环境上安装Scrapy、PySide和Ghost.py过程中查到的有用资料的整合。如嫌下面的字太小，可戳此PDF<a href="http://tripleday.github.io/uploads/pdf/CentOS%26scrapy%26ghost.py.pdf">源地址</a>。<br>
 
 	<div class="row">
-	  <iframe src="http://nagland.github.io/viewer/web/viewer.html?val=http://tripleday.github.io/pdf/CentOS%26scrapy%26ghost.py.pdf" style="width:100%; height:900px"></iframe>
+	  <iframe src="http://nagland.github.io/viewer/web/viewer.html?val=http://tripleday.github.io/uploads/pdf/CentOS%26scrapy%26ghost.py.pdf" style="width:100%; height:900px"></iframe>
 	</div>
 
 
@@ -82,12 +85,6 @@
   
     
     <entry>
-      <title><![CDATA[categories]]></title>
-      <url>http://tripleday.github.io/categories/index.html</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[About]]></title>
       <url>http://tripleday.github.io/about/index.html</url>
       <content type="html"><![CDATA[<h1 id="About-Me"><a href="#About-Me" class="headerlink" title="About Me"></a>About Me</h1><p>My name is Haotian Wu(吴昊天). I’m a master student in <a href="http://cse.seu.edu.cn/en/index.html" target="_blank" rel="external">School of Computer Science &amp; Engineering</a> at <a href="http://www.seu.edu.cn/english/main.htm" target="_blank" rel="external">Southeast University</a> and will graduate in Summer 2018.</p>
@@ -106,6 +103,12 @@
 </ul>
 <h1 id="Contact"><a href="#Contact" class="headerlink" title="Contact"></a>Contact</h1><p>Just to avoid spams, here is the Base64 code of my e-mail address:<br><code>aGFvdGlhbnd1c2V1QGdtYWlsLmNvbQ==</code></p>
 ]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[categories]]></title>
+      <url>http://tripleday.github.io/categories/index.html</url>
+      <content type="html"></content>
     </entry>
     
     <entry>
