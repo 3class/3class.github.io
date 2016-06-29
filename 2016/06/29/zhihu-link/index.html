@@ -1,0 +1,424 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <meta name="author" content="Haotian Wu">
+  
+  
+  
+  
+    <meta name="description" content="前两天做了一个爬取知乎用户follow关系的爬虫。做这个爬虫是受一个知乎专栏的启发Web Crawler with Python - 09.怎样通过爬虫找出我和轮子哥、四万姐之间的最短关系，我有部分代码参考了xlzd。由于当时也想了解一下NoSQL里Graph Database，于是花了几天时间做了一个简单的爬虫，感觉收获不少。封面图片可以理解成是一个六度分隔理论的直观展现，也是我在做爬虫时...">
+  
+  <title>基于Neo4j的知乎关系爬虫 [ tripleday ]</title>
+  
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  <link rel="stylesheet" href="/css/random.css">
+<link rel="stylesheet" href="/css/vegas.min.css">
+<link rel="stylesheet" href="/css/highlight-railscasts.css">
+<link rel="stylesheet" href="/css/jquery.fancybox.css">
+<link rel="stylesheet" href="/css/iconfont/iconfont.css">
+<link rel="stylesheet" href="/css/jquery.fancybox-thumbs.css">
+<link rel="stylesheet" href="/css/plyr.css"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+</head>
+
+<body>
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="side-navigate hide-area">
+  
+  
+    <div class="item next">
+      <a href="/2016/06/16/centos&scrapy&ghost.py/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        CentOS 6.5 下scrapy与ghost.py的安装干货
+      </div>
+    </div>
+  
+</div>
+<div id="outer-container" class="hide-area">
+<div id="container">
+  <div id="menu-outer" class="slide-down">
+    <div id="menu-inner">
+      <div id="brand">
+        
+        <a onClick="openUserCard()">
+          <img id="avatar" src="https://avatars3.githubusercontent.com/u/16516510?v=3&s=460"/>
+          <div id="homelink">tripleday</div>
+        </a>
+      </div>
+      <div id="menu-list">
+        <ul>
+        
+        
+          <li><a href="/">Home</a></li>
+        
+          <li><a href="/archives">Archives</a></li>
+        
+          <li><a href="/tags">Tags</a></li>
+        
+          <li><a href="/categories">Categories</a></li>
+        
+          <li><a href="/about">About</a></li>
+        
+        </ul>
+      </div>
+      <div id="show-menu">
+        <button>Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="content-outer">
+    <div id="content-inner">
+      
+      
+  <article id="post">
+    <h1>基于Neo4j的知乎关系爬虫</h1>
+    <p class="page-title-sub">
+      <span id = "post-title-date">Created at 2016-06-29</span>
+      
+        <span id = "post-title-updated">Updated at 2016-06-29</span>
+      
+      
+      <span id = "post-title-categories">Category
+      
+      
+        
+        
+        <a href="/categories/Crawler/">Crawler</a>
+      
+      </span>
+      
+      
+      <span id = "post-title-tags">
+      Tag
+      
+      
+        
+        
+        <a href="/tags/python/">python</a>
+      
+        
+          /
+        
+        
+        <a href="/tags/zhihu/">zhihu</a>
+      
+        
+          /
+        
+        
+        <a href="/tags/Neo4j/">Neo4j</a>
+      
+      </span>
+      
+    </p>
+    
+      <div class="center-title">
+
+  <a class="fancybox-thumb" rel="fancybox-thumb" href="/uploads/img/20160629/cover.jpg">
+    <img src="/uploads/img/20160629/cover.jpg" />
+  </a>
+
+</div>
+
+    
+    <p>前两天做了一个爬取知乎用户<strong>follow</strong>关系的爬虫。做这个爬虫是受一个知乎专栏的启发<a href="https://zhuanlan.zhihu.com/p/20546546" target="_blank" rel="external">Web Crawler with Python - 09.怎样通过爬虫找出我和轮子哥、四万姐之间的最短关系</a>，我有部分代码参考了xlzd。由于当时也想了解一下NoSQL里Graph Database，于是花了几天时间做了一个简单的爬虫，感觉收获不少。封面图片可以理解成是一个六度分隔理论的直观展现，也是我在做爬虫时的意外验证。</p>
+<h1 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h1><p>首先交代一下爬虫所用到的数据库和环境：</p>
+<h2 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h2><p>MongoDB一种基于分布式文件存储的数据库，属于NoSQL里的文档型数据库。它的性能较高，面向集合存储，爬虫所抓取的用户信息都存储在其中。<br>在python里使用MongoDB，只需要在本机下载安装MongoDB服务，在python的环境里安装pymongo依赖，<code>pip install pymongo</code>就可以了。如果嫌MongoDB的命令行操作不方便，可以装一个MongoDB的可视化工具<a href="https://robomongo.org/" target="_blank" rel="external">Robomongo</a>。</p>
+<h2 id="Neo4j"><a href="#Neo4j" class="headerlink" title="Neo4j"></a>Neo4j</h2><p>Neo4j是一个高性能的,NoSQL图形数据库，它将结构化数据存储在网络上而不是表中。Neo4j也可以被看作是一个高性能的图引擎，该引擎具有成熟数据库的所有特性。<br>关于Neo4j的安装，可以参考这篇博客<a href="http://blog.csdn.net/dyllove98/article/details/8635965" target="_blank" rel="external">Neo4j介绍与使用</a>。Win7环境下，官网<a href="https://neo4j.com/download/" target="_blank" rel="external">下载</a>可以一键安装Neo4j。<br>Neo4j使用类似SQL的查询语言<strong>Cypher</strong>，关于Cypher的使用和简单demo，可以参考<a href="http://www.uml.org.cn/sjjm/201203063.asp" target="_blank" rel="external">Cypher查询语言–Neo4j中的SQL</a>。当然，为了减少学习Cypher的时间成本，我在python环境中安装了<strong>py2neo</strong>，<code>pip install py2neo</code>。py2neo的handbook见<a href="http://py2neo.org/v3/" target="_blank" rel="external">The Py2neo v3 Handbook</a>，我对py2neo依赖库的理解是一个Neo4j的客户端，其中对Neo4j的操作进行了封装。调用py2neo的一个函数，它会自动转化为Cypher语言并以HTTP API向Neo4j服务端口提交一个事务。当然它也支持直接提交Cypher语句到Neo4j执行，有些复杂的数据操作比如寻找两点之间最短路径，py2neo没有提供直接的函数调用，需要我们自己编写Cypher。</p>
+<h2 id="python依赖"><a href="#python依赖" class="headerlink" title="python依赖"></a>python依赖</h2><ul>
+<li>requests<br>request是一个非常好用的网络依赖包，API文档见<a href="http://www.python-requests.org/en/master/" target="_blank" rel="external">Requests: HTTP for Humans</a>。文档网站的名字“HTTP for Humans”，算是程序员的一种幽默吧。</li>
+<li>BeautifulSoup<br>BeautifulSoup依赖库是一个非常实用的HTML解析器，不需要程序员再焦头烂额地写RegEx。虽然开发友好了，但解析时有时会出一些不可思议的bug。API文档见<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc.zh/" target="_blank" rel="external">Beautiful Soup 4.2.0 文档</a>。</li>
+</ul>
+<h1 id="爬虫概要"><a href="#爬虫概要" class="headerlink" title="爬虫概要"></a>爬虫概要</h1><h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>我爬虫的目的非常简单，和开头的那篇专栏一样：知乎大V—轮子哥（<strong>vczh</strong>）需要通过多少人才能认识并关注我？这里的认识是指单方面的知道，即成为我的follower（不需要为followee，虽然这是肯定的），知道这世界原来还有个知乎用户“<strong>三天三夜</strong>”。</p>
+<h2 id="开发思路"><a href="#开发思路" class="headerlink" title="开发思路"></a>开发思路</h2><p>爬虫从我自己的知乎出发，读取我的follower列表，对我的每个follower重复搜索操作，直到搜索到的follower list里有vczh。这个遍历是<strong>BFS</strong>的。当然，为了防止在广度优先搜索时，层与层之间节点数量扩张过快，我限制只搜索follower num<strong>不超过100</strong>的不活跃的小用户，当然我提前调查了轮子哥也有follow一些这种小用户。除了为了防止扩张过快导致的存储空间过大，这样做也给验证六度分隔理论提了更为苛刻的条件，毕竟轮子哥通过其他大V能follow到我的概率是远大于通过小用户的。</p>
+<h2 id="代码相关"><a href="#代码相关" class="headerlink" title="代码相关"></a>代码相关</h2><p>整个爬虫的代码我push到Github上，附上<a href="https://github.com/tripleday/zhihu_link" target="_blank" rel="external">链接</a>。<br>贴上几个想到的小细节：</p>
+<ul>
+<li>这个爬虫需要自己的知乎cookie才能爬取。建议使用chrome，安装<strong>EditThisCookie</strong>插件，将知乎的cookie复制粘贴到zhihu_cookie.json文件。</li>
+<li>知乎用户的唯一性不是靠用户名，而是html里内嵌隐藏的<strong>data-id</strong>，在ajax获取数据是发送的表单数据里也需要这个值。所以Neo4j中使用此值可以唯一标识用户。</li>
+<li>BeautifulSoup的官方文档里的一张解析器对比表格<br><img src="/uploads/img/20160629/bs.png" alt="BeautifulSoup解析器对比"><br>实际使用钟，在解析<code>https://www.zhihu.com/people/hong-ming-da</code>这条链接时，lxml解析一直都会出错，换成html.parser后解析成功。所以html.parser虽然解析速度慢，但容错性更好一点。</li>
+<li>其他的细节想到后再补充。</li>
+</ul>
+<h1 id="爬取结果"><a href="#爬取结果" class="headerlink" title="爬取结果"></a>爬取结果</h1><p>爬虫程序在爬了23928个用户才停下来，即找到了轮子哥。这是爬完的部分用户图：<br><img src="/uploads/img/20160629/whole.png" alt="部分用户关系图"></p>
+<p>在命令行执行Cypher语句：<code>MATCH (a {_id : &#39;0970f947b898ecc0ec035f9126dd4e08&#39;}), (b {_id : &#39;bd648b6ef0f14880a522e09ce2752465&#39;}), p = allShortestPaths( (a)-[*..200]-&gt;(b) ) RETURN p</code>可以得到轮子哥到我的最短路径：<br><img src="/uploads/img/20160629/shortestpath.png" alt="最短路径图"></p>
+<p>可以发现：轮子哥到我，中间正好经过了6个人。这条路的生成条件是较为严格的。不仅是因为我只选择的小用户进行爬取，而且要知道我的follower目前是只有一个的，轮子哥要连接到我只能通过他。虽然实验得到的 <strong>6</strong> 可能和六度分隔理论恰巧吻合，但鉴于路径选择的苛刻条件，六度的6也许并不只是一种猜想。</p>
+
+  </article>
+  <div class="random-toc-area">
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
+  <div class="random-toc">
+    <h2>Table of Content</h2>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#环境安装"><span class="toc-text">环境安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MongoDB"><span class="toc-text">MongoDB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Neo4j"><span class="toc-text">Neo4j</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python依赖"><span class="toc-text">python依赖</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#爬虫概要"><span class="toc-text">爬虫概要</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#目的"><span class="toc-text">目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发思路"><span class="toc-text">开发思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码相关"><span class="toc-text">代码相关</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#爬取结果"><span class="toc-text">爬取结果</span></a></li></ol>
+  </div>
+</div>
+
+  
+<nav id="pagination">
+  
+
+  
+
+  
+    <a href="/2016/06/16/centos&scrapy&ghost.py/" class="next">Next post CentOS 6.5 下scrapy与ghost.py的安装干货 &rarr;</a>
+  
+</nav>
+
+  <!-- JiaThis Button BEGIN -->
+
+<!-- JiaThis Button END -->
+
+
+      
+      
+      
+      <div id="disqus_thread"></div>
+      
+    </div>
+  </div>
+
+  <div id="bottom-outer">
+    <div id="bottom-inner">
+      Site by Haotian Wu using
+      <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
+      <br>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+  <div id="disqus_thread"></div>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//tripleday.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+<div id="user-card">
+  <div class="center-field">
+    <img class="avatar" src="https://avatars3.githubusercontent.com/u/16516510?v=3&s=460">
+    <p id="description">I'm Cupid, stupid!</p>
+    <ul class="social-icon">
+  
+  
+    <li>
+      <a href="https://github.com/tripleday">
+        
+          <i class="icon iconfont github">&#xe606;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://www.zhihu.com/people/wu-hao-tian-73">
+        
+          <i class="icon iconfont zhihu">&#xe60b;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://www.facebook.com/haotianwuseu">
+        
+          <i class="icon iconfont facebook">&#xe604;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="https://twitter.com/kjhn15">
+        
+          <i class="icon iconfont twitter">&#xe600;</i>
+        
+      </a>
+    </li>
+  
+    <li>
+      <a href="http://weibo.com/3241222987">
+        
+          <i class="icon iconfont weibo">&#xe602;</i>
+        
+      </a>
+    </li>
+  
+</ul>
+  </div>
+</div>
+
+
+<div id="btn-view">Hide</div>
+
+<script>
+// is trigger analytics / tongji script
+var isIgnoreHost = false;
+
+if(window && window.location && window.location.host) {
+  isIgnoreHost = ["localhost","127.0.0.1"].some(function(address){
+    return 0 === window.location.host.indexOf(address);
+  });
+}
+
+var isTriggerAnalytics = !( true && isIgnoreHost );
+
+</script>
+
+  <script>
+if(isTriggerAnalytics) {
+  var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?380bd64cb1b7792a4cb7151492fe6861";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+}
+</script>
+
+
+
+  <script>
+if(isTriggerAnalytics) {
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-79173072-1', 'auto');
+  ga('send', 'pageview');
+}
+
+</script>
+
+
+
+  
+  
+    <script src="/js/jquery-2.2.3.min.js"></script>
+  
+    <script src="/js/vegas.min.js"></script>
+  
+    <script src="/js/random.js"></script>
+  
+    <script src="/js/highlight.pack.js"></script>
+  
+    <script src="/js/jquery.mousewheel.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox.pack.js"></script>
+  
+    <script src="/js/jquery.fancybox-thumbs.js"></script>
+  
+    <script src="/js/plyr.js"></script>
+  
+
+<script>
+
+  // fancybox
+  var backgroundImages = [];
+  
+  $('#post').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox') || $(this).parent().hasClass('fancybox-thumb')) return;
+      var alt = this.alt || this.title;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'post' + i);
+    });
+  });
+  $(".fancybox").fancybox();
+
+var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
+var unsplashConfig = {"gravity":"north"};
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="custom_mathjax_source">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>
+
