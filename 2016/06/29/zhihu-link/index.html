@@ -37,9 +37,18 @@
 <body>
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="side-navigate hide-area">
   
+    <div class="item prev">
+      <a href="/2016/07/14/hmm-memm-crf/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        HMM、MEMM和CRF的学习与总结
+      </div>
+    </div>
+  
   
     <div class="item next">
-      <a href="/2016/06/16/centos&scrapy&ghost.py/">
+      <a href="/2016/06/16/centos-scrapy-ghost.py/">
         <div class="item-icon"></div>
       </a>
       <div class="item-title">
@@ -90,7 +99,7 @@
     <p class="page-title-sub">
       <span id = "post-title-date">Created at 2016-06-29</span>
       
-        <span id = "post-title-updated">Updated at 2016-06-29</span>
+        <span id = "post-title-updated">Updated at 2016-07-13</span>
       
       
       <span id = "post-title-categories">Category
@@ -109,12 +118,6 @@
       
         
         
-        <a href="/tags/python/">python</a>
-      
-        
-          /
-        
-        
         <a href="/tags/zhihu/">zhihu</a>
       
         
@@ -122,6 +125,12 @@
         
         
         <a href="/tags/Neo4j/">Neo4j</a>
+      
+        
+          /
+        
+        
+        <a href="/tags/python/">python</a>
       
       </span>
       
@@ -136,12 +145,14 @@
 </div>
 
     
-    <p>前两天做了一个爬取知乎用户<strong>follow</strong>关系的爬虫。做这个爬虫是受一个知乎专栏的启发<a href="https://zhuanlan.zhihu.com/p/20546546" target="_blank" rel="external">Web Crawler with Python - 09.怎样通过爬虫找出我和轮子哥、四万姐之间的最短关系</a>，我有部分代码参考了xlzd。由于当时也想了解一下NoSQL里Graph Database，于是花了几天时间做了一个简单的爬虫，感觉收获不少。封面图片可以理解成是一个六度分隔理论的直观展现，也是我在做爬虫时的意外验证。</p>
+    <p>前两天做了一个爬取知乎用户<strong>follow</strong>关系的爬虫。做这个爬虫是受一个知乎专栏的启发<a href="https://zhuanlan.zhihu.com/p/20546546" target="_blank" rel="external">Web Crawler with Python - 09.怎样通过爬虫找出我和轮子哥、四万姐之间的最短关系</a>，我有部分代码参考了xlzd。由于当时也想了解一下NoSQL里Graph Database，于是花了几天时间做了一个简单的爬虫，感觉收获不少。封面图片可以理解成是一个<strong>六度分隔理论</strong>的直观展现，也是我在做爬虫时的意外验证。</p>
 <h1 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h1><p>首先交代一下爬虫所用到的数据库和环境：</p>
 <h2 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h2><p>MongoDB一种基于分布式文件存储的数据库，属于NoSQL里的文档型数据库。它的性能较高，面向集合存储，爬虫所抓取的用户信息都存储在其中。<br>在python里使用MongoDB，只需要在本机下载安装MongoDB服务，在python的环境里安装pymongo依赖，<code>pip install pymongo</code>就可以了。如果嫌MongoDB的命令行操作不方便，可以装一个MongoDB的可视化工具<a href="https://robomongo.org/" target="_blank" rel="external">Robomongo</a>。</p>
-<h2 id="Neo4j"><a href="#Neo4j" class="headerlink" title="Neo4j"></a>Neo4j</h2><p>Neo4j是一个高性能的,NoSQL图形数据库，它将结构化数据存储在网络上而不是表中。Neo4j也可以被看作是一个高性能的图引擎，该引擎具有成熟数据库的所有特性。<br>关于Neo4j的安装，可以参考这篇博客<a href="http://blog.csdn.net/dyllove98/article/details/8635965" target="_blank" rel="external">Neo4j介绍与使用</a>。Win7环境下，官网<a href="https://neo4j.com/download/" target="_blank" rel="external">下载</a>可以一键安装Neo4j。<br>Neo4j使用类似SQL的查询语言<strong>Cypher</strong>，关于Cypher的使用和简单demo，可以参考<a href="http://www.uml.org.cn/sjjm/201203063.asp" target="_blank" rel="external">Cypher查询语言–Neo4j中的SQL</a>。当然，为了减少学习Cypher的时间成本，我在python环境中安装了<strong>py2neo</strong>，<code>pip install py2neo</code>。py2neo的handbook见<a href="http://py2neo.org/v3/" target="_blank" rel="external">The Py2neo v3 Handbook</a>，我对py2neo依赖库的理解是一个Neo4j的客户端，其中对Neo4j的操作进行了封装。调用py2neo的一个函数，它会自动转化为Cypher语言并以HTTP API向Neo4j服务端口提交一个事务。当然它也支持直接提交Cypher语句到Neo4j执行，有些复杂的数据操作比如寻找两点之间最短路径，py2neo没有提供直接的函数调用，需要我们自己编写Cypher。</p>
+<h2 id="Neo4j"><a href="#Neo4j" class="headerlink" title="Neo4j"></a>Neo4j</h2><p>Neo4j是一个高性能的,NoSQL图形数据库，它将结构化数据存储在网络上而不是表中。Neo4j也可以被看作是一个高性能的图引擎，该引擎具有成熟数据库的所有特性。<br>关于Neo4j的安装，可以参考这篇博客<a href="http://blog.csdn.net/dyllove98/article/details/8635965" target="_blank" rel="external">Neo4j介绍与使用</a>。Win7环境下，官网<a href="https://neo4j.com/download/" target="_blank" rel="external">下载</a>可以一键安装Neo4j。</p>
+<p>Neo4j使用类似SQL的查询语言<strong>Cypher</strong>，关于Cypher的使用和简单demo，可以参考<a href="http://www.uml.org.cn/sjjm/201203063.asp" target="_blank" rel="external">Cypher查询语言–Neo4j中的SQL</a>。当然，为了减少学习Cypher的时间成本，我在python环境中安装了<strong>py2neo</strong>，<code>pip install py2neo</code>。</p>
+<p>py2neo的handbook见<a href="http://py2neo.org/v3/" target="_blank" rel="external">The Py2neo v3 Handbook</a>。我对py2neo依赖库的理解：py2neo是一个Neo4j的客户端，其中对Neo4j的操作进行了封装。调用py2neo的一个函数，它会自动转化为Cypher语言并以HTTP API向Neo4j服务端口提交一个事务。当然它也支持直接提交Cypher语句到Neo4j执行，有些复杂的数据操作比如寻找两点之间最短路径，py2neo没有提供直接的函数调用，需要我们自己编写Cypher。</p>
 <h2 id="python依赖"><a href="#python依赖" class="headerlink" title="python依赖"></a>python依赖</h2><ul>
-<li>requests<br>request是一个非常好用的网络依赖包，API文档见<a href="http://www.python-requests.org/en/master/" target="_blank" rel="external">Requests: HTTP for Humans</a>。文档网站的名字“HTTP for Humans”，算是程序员的一种幽默吧。</li>
+<li>requests<br>requests是一个非常好用的网络依赖包，API文档见<a href="http://www.python-requests.org/en/master/" target="_blank" rel="external">Requests: HTTP for Humans</a>。文档网站的名字“HTTP for Humans”，算是程序员的一种幽默吧。</li>
 <li>BeautifulSoup<br>BeautifulSoup依赖库是一个非常实用的HTML解析器，不需要程序员再焦头烂额地写RegEx。虽然开发友好了，但解析时有时会出一些不可思议的bug。API文档见<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc.zh/" target="_blank" rel="external">Beautiful Soup 4.2.0 文档</a>。</li>
 </ul>
 <h1 id="爬虫概要"><a href="#爬虫概要" class="headerlink" title="爬虫概要"></a>爬虫概要</h1><h2 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h2><p>我爬虫的目的非常简单，和开头的那篇专栏一样：知乎大V—轮子哥（<strong>vczh</strong>）需要通过多少人才能认识并关注我？这里的认识是指单方面的知道，即成为我的follower（不需要为followee，虽然这是肯定的），知道这世界原来还有个知乎用户“<strong>三天三夜</strong>”。</p>
@@ -152,7 +163,7 @@
 <li>知乎用户的唯一性不是靠用户名，而是html里内嵌隐藏的<strong>data-id</strong>，在ajax获取数据是发送的表单数据里也需要这个值。所以Neo4j中使用此值可以唯一标识用户。</li>
 <li>BeautifulSoup的官方文档里的一张解析器对比表格</li>
 </ul>
-<p><img src="/uploads/img/20160629/bs.png" alt="BeautifulSoup解析器对比"><br>实际使用钟，在解析<code>https://www.zhihu.com/people/hong-ming-da</code>这条链接时，lxml解析一直都会出错，换成html.parser后解析成功。所以html.parser虽然解析速度慢，但容错性更好一点。</p>
+<p><img src="/uploads/img/20160629/bs.png" alt="BeautifulSoup解析器对比"><br>实际使用中，在解析<code>https://www.zhihu.com/people/hong-ming-da</code>这条链接时，lxml解析一直都会出错，换成html.parser后解析成功。所以html.parser虽然解析速度慢，但容错性更好一点。</p>
 <ul>
 <li>其他的细节想到后再补充。</li>
 </ul>
@@ -173,11 +184,13 @@
   
 <nav id="pagination">
   
-
+    <a href="/2016/07/14/hmm-memm-crf/" class="prev">&larr; Prev post HMM、MEMM和CRF的学习与总结</a>
   
 
   
-    <a href="/2016/06/16/centos&scrapy&ghost.py/" class="next">Next post CentOS 6.5 下scrapy与ghost.py的安装干货 &rarr;</a>
+
+  
+    <a href="/2016/06/16/centos-scrapy-ghost.py/" class="next">Next post CentOS 6.5 下scrapy与ghost.py的安装干货 &rarr;</a>
   
 </nav>
 
@@ -234,7 +247,7 @@ s.setAttribute('data-timestamp', +new Date());
 <div id="user-card">
   <div class="center-field">
     <img class="avatar" src="https://avatars3.githubusercontent.com/u/16516510?v=3&s=460">
-    <p id="description">I'm Cupid, stupid!</p>
+    <p id="description">Life is short, you need Python.</p>
     <ul class="social-icon">
   
   
@@ -406,7 +419,7 @@ $(".video-container iframe").each(function(i){
 plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
 </script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config("");
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
 </script>
 
 <script type="text/x-mathjax-config">
@@ -418,7 +431,7 @@ plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
   });
 </script>
 
-<script type="text/javascript" src="custom_mathjax_source">
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
