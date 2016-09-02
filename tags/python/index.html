@@ -20,7 +20,7 @@
   
     <meta name="description" content="Life is short, you need Python.">
   
-  <title>Tag: python [ tripleday ]</title>
+  <title>Tag: Python [ tripleday ]</title>
   
   
     <link rel="shortcut icon" href="/favicon.ico">
@@ -79,13 +79,29 @@
       
       
   <div id="tag">
-    <h1>python</h1>
+    <h1>Python</h1>
     
       
       
         
       
         
+      
+        
+      
+        
+      
+      
+    
+      
+      
+        
+      
+        
+      
+      
+    
+      
       
         
       
@@ -96,20 +112,20 @@
       
       <div class="post-title-item">
   
-  <a href="/2016/06/16/centos-scrapy-ghost.py/">
+  <a href="/2016/07/28/hmm4nlp/">
   
-    CentOS 6.5 下scrapy与ghost.py的安装干货
+    NLP中使用HMM进行tag、seg和ner
   
   </a>
   <p class="page-title-sub">
-    <span id = "post-title-date">6-16</span>
+    <span id = "post-title-date">7-28</span>
     
     <span id = "post-title-categories">Category
     
     
       
       
-      <a href="/categories/Reviews/">Reviews</a>
+      <a href="/categories/NLP/">NLP</a>
     
     </span>
     
@@ -120,106 +136,13 @@
     
       
       
-      <a href="/tags/CentOS/">CentOS</a>
+      <a href="/tags/HMM/">HMM</a>
     
       
         /
       
       
-      <a href="/tags/Scrapy/">Scrapy</a>
-    
-      
-        /
-      
-      
-      <a href="/tags/ghost-py/">ghost.py</a>
-    
-      
-        /
-      
-      
-      <a href="/tags/python/">python</a>
-    
-    </span>
-    
-    
-      <br>
-      
-      
-    
-  </p>
-  
-</div>
-      
-    
-      
-      
-        
-      
-        
-      
-      
-    
-      
-      
-        
-      
-        
-      
-        
-      
-      
-    
-      
-      
-        
-          
-        
-      
-        
-      
-        
-      
-      
-      <div class="post-title-item">
-  
-  <a href="/2016/06/29/zhihu-link/">
-  
-    基于Neo4j的知乎关系爬虫
-  
-  </a>
-  <p class="page-title-sub">
-    <span id = "post-title-date">6-29</span>
-    
-    <span id = "post-title-categories">Category
-    
-    
-      
-      
-      <a href="/categories/Crawler/">Crawler</a>
-    
-    </span>
-    
-    
-    <span id = "post-title-tags">
-    Tag
-    
-    
-      
-      
-      <a href="/tags/python/">python</a>
-    
-      
-        /
-      
-      
-      <a href="/tags/zhihu/">zhihu</a>
-    
-      
-        /
-      
-      
-      <a href="/tags/Neo4j/">Neo4j</a>
+      <a href="/tags/Python/">Python</a>
     
     </span>
     
@@ -229,8 +152,8 @@
       
         
         
-          <a class="fancybox-thumb" rel="fancybox-thumb" href="/uploads/img/20160629/cover.jpg">
-            <img src="/uploads/img/20160629/cover.jpg" />
+          <a class="fancybox-thumb" rel="fancybox-thumb" href="/uploads/img/20160728/cover.png">
+            <img src="/uploads/img/20160728/cover.png" />
           </a>
         
       
@@ -243,63 +166,29 @@
       
       
         
-          
-        
       
         
       
       
-      <div class="post-title-item">
-  
-  <a href="/2016/07/20/img2txt/">
-  
-    使用python将图片转化为字符画
-  
-  </a>
-  <p class="page-title-sub">
-    <span id = "post-title-date">7-20</span>
     
-    <span id = "post-title-categories">Category
-    
-    
-      
-      
-      <a href="/categories/Fun/">Fun</a>
-    
-    </span>
-    
-    
-    <span id = "post-title-tags">
-    Tag
-    
-    
-      
-      
-      <a href="/tags/python/">python</a>
-    
-      
-        /
-      
-      
-      <a href="/tags/PIL/">PIL</a>
-    
-    </span>
-    
-    
-      <br>
       
       
         
-        
-          <a class="fancybox-thumb" rel="fancybox-thumb" href="/uploads/img/20160720/cover.png">
-            <img src="/uploads/img/20160720/cover.png" />
-          </a>
+      
         
       
+        
+      
+      
     
-  </p>
-  
-</div>
+      
+      
+        
+      
+        
+      
+        
+      
       
     
   </div>
@@ -461,6 +350,66 @@ if(isTriggerAnalytics) {
   $(".fancybox").fancybox();
 
 var vegasConfig = {"preload­Image":true,"transition":["slideLeft2","slideRight2","flash2"],"timer":true,"delay":5000,"shuffle":true,"count":28};
+var unsplashConfig = {"gravity":"north"};
+
+$(".fancybox-thumb").fancybox({
+  prevEffect: 'none',
+  nextEffect: 'none',
+  helpers: {
+    title: {
+      type: 'outside'
+    },
+    thumbs: {
+      width: 50,
+      height: 50
+    }
+  }
+});
+
+// show video with plyr
+$(".video-container iframe").each(function(i){
+  var url = $(this).attr('src');
+  var id = url.split('/').pop();
+  var plyrContainer = document.createElement('div');
+  plyrContainer.className = 'plyr';
+  var plyrElement = document.createElement('div');
+  plyrElement.dataset.videoId = id;
+  switch(true) {
+    case url.search('youtube.com') >= 0:
+      plyrElement.dataset.type = 'youtube';
+      break;
+    case url.search('vimeo.com') >= 0:
+      plyrElement.dataset.type = 'vimeo';
+      break;
+    default:
+      return;
+  };
+  plyrContainer.appendChild(plyrElement);
+  $(this).parent().html(plyrContainer);
+});
+plyr.setup('.plyr', {iconUrl: '/css/sprite.svg'});
+</script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+</body>
+</html>
+
+mer":true,"delay":5000,"shuffle":true,"count":28};
 var unsplashConfig = {"gravity":"north"};
 
 $(".fancybox-thumb").fancybox({

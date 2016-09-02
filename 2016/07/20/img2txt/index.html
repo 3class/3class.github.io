@@ -38,13 +38,22 @@
 <body>
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="side-navigate hide-area">
   
+    <div class="item prev">
+      <a href="/2016/07/28/hmm4nlp/">
+        <div class="item-icon"></div>
+      </a>
+      <div class="item-title">
+        NLP中使用HMM进行tag、seg和ner
+      </div>
+    </div>
+  
   
     <div class="item next">
       <a href="/2016/07/14/hmm-memm-crf/">
         <div class="item-icon"></div>
       </a>
       <div class="item-title">
-        HMM、MEMM和CRF的学习与总结
+        HMM、MEMM和CRF的学习总结
       </div>
     </div>
   
@@ -134,7 +143,8 @@
     <p>忽然想玩这个图片转化的把戏，是因为之前在知乎上看到一个专栏里用到了下面这个图：<br><img src="/uploads/img/20160720/mo.jpg" alt="拿衣服"><br>当然，那篇专栏没过几小时就被和谐了。我在网上貌似搜到了这个图片转emoji mosaic的网址，供大家戏耍：<a href="http://ericandrewlewis.github.io/emoji-mosaic/" target="_blank" rel="external">Emoji Mosaic</a>。</p>
 <p>做这个转emoji马赛克应该蛮复杂的，当然它的源码也很容易找到：<a href="https://github.com/ericandrewlewis/emoji-mosaic" target="_blank" rel="external">ericandrewlewis/emoji-mosaic</a>。但我纯属娱乐又不想花功夫，于是就在晚上学了学把图片转为字符图的代码玩玩。</p>
 <p>代码很简单：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"> </span><br><span class="line">grey2char = [<span class="string">'@'</span>,<span class="string">'#'</span>,<span class="string">'$'</span>,<span class="string">'%'</span>,<span class="string">'&amp;'</span>,<span class="string">'?'</span>,<span class="string">'*'</span>,<span class="string">'o'</span>,<span class="string">'/'</span>,<span class="string">'&#123;'</span>,<span class="string">'['</span>,<span class="string">'('</span>,<span class="string">'|'</span>,<span class="string">'!'</span>,<span class="string">'^'</span>,<span class="string">'~'</span>,<span class="string">'-'</span>,<span class="string">'_'</span>,<span class="string">':'</span>,<span class="string">';'</span>,<span class="string">','</span>,<span class="string">'.'</span>,<span class="string">'`'</span>,<span class="string">' '</span>]</span><br><span class="line">count = len(grey2char)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">toText</span><span class="params">(image_file)</span>:</span></span><br><span class="line">   image_file = image_file.convert(<span class="string">'L'</span>)<span class="comment"># 转灰度</span></span><br><span class="line">   result = <span class="string">''</span><span class="comment"># 储存字符串</span></span><br><span class="line">   <span class="keyword">for</span> h <span class="keyword">in</span> range(<span class="number">0</span>,  image_file.size[<span class="number">1</span>]):<span class="comment"># height</span></span><br><span class="line">      <span class="keyword">for</span> w <span class="keyword">in</span> range(<span class="number">0</span>, image_file.size[<span class="number">0</span>]):<span class="comment"># width</span></span><br><span class="line">         gray = image_file.getpixel((w,h))</span><br><span class="line">         result += grey2char[int(gray/(<span class="number">255</span>/(count<span class="number">-1</span>)))]</span><br><span class="line">      result += <span class="string">'\r\n'</span></span><br><span class="line">   <span class="keyword">return</span> result</span><br><span class="line"> </span><br><span class="line">image_file = Image.open(<span class="string">"input.jpg"</span>)<span class="comment"># 打开图片</span></span><br><span class="line">image_file = image_file.resize((int(image_file.size[<span class="number">0</span>]), int(image_file.size[<span class="number">1</span>]*<span class="number">0.55</span>)))<span class="comment"># 调整图片大小</span></span><br><span class="line"> </span><br><span class="line">output = open(<span class="string">'output.txt'</span>,<span class="string">'w'</span>)</span><br><span class="line">output.write(toText(image_file))</span><br><span class="line">output.close()</span><br></pre></td></tr></table></figure></p>
-<p>需要注意的是要安装依赖PIL。<br>原图：<br><img src="/uploads/img/20160720/input.jpg" alt=""></p>
+<p>需要注意的是要安装依赖PIL。</p>
+<p>原图：<br><img src="/uploads/img/20160720/input.jpg" alt=""></p>
 <p>字符图：<br><img src="/uploads/img/20160720/cover.png" alt=""></p>
 
   </article>
@@ -150,11 +160,13 @@
   
 <nav id="pagination">
   
-
+    <a href="/2016/07/28/hmm4nlp/" class="prev">&larr; Prev post NLP中使用HMM进行tag、seg和ner</a>
   
 
   
-    <a href="/2016/07/14/hmm-memm-crf/" class="next">Next post HMM、MEMM和CRF的学习与总结 &rarr;</a>
+
+  
+    <a href="/2016/07/14/hmm-memm-crf/" class="next">Next post HMM、MEMM和CRF的学习总结 &rarr;</a>
   
 </nav>
 
