@@ -6,7 +6,7 @@
 
 
 <!doctype html>
-<html lang="">
+<html lang="English">
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,7 +16,7 @@
   
   
   
-    <meta name="description" content="之前一直在做Scrapy中关于网页动态内容的获取，主要目标是想获得javascript渲染后的网页html源码。在转向使用ghost.py来做脚本解析之前的挖坑爬坑过程中，我已经造访过我所知的大大小小各种论坛、博客以及贴吧和知乎。其中有大方向上指导意义的有知乎里的相关问题：
+    <meta name="description" content="之前一直在做scrapy中关于网页动态内容的获取，主要目标是想获得javascript渲染后的网页html源码。在转向使用ghost.py来做脚本解析之前的挖坑爬坑过程中，我已经造访过我所知的大大小小各种论坛、博客以及贴吧和知乎。其中有大方向上指导意义的有知乎里的相关问题：
 
 Python 爬虫如何获取 JS 生成的 URL 和网页内容？
 Python爬虫在处理由Javascript动态生成...">
@@ -100,23 +100,23 @@ Python爬虫在处理由Javascript动态生成...">
   <article id="post">
     <h1>CentOS 6.5 下scrapy与ghost.py的安装干货</h1>
     <p class="page-title-sub">
-      <span id = "post-title-date">撰写于 2016-06-16</span>
+      <span id = "post-title-date">Created at 2016-06-16</span>
       
-        <span id = "post-title-updated">修改于 2016-08-18</span>
+        <span id = "post-title-updated">Updated at 2017-08-11</span>
       
       
-      <span id = "post-title-categories">分类
+      <span id = "post-title-categories">Category
       
       
         
         
-        <a href="/categories/Reviews/">Reviews</a>
+        <a href="/categories/Crawler/">Crawler</a>
       
       </span>
       
       
       <span id = "post-title-tags">
-      标签
+      Tag
       
       
         
@@ -127,7 +127,7 @@ Python爬虫在处理由Javascript动态生成...">
           /
         
         
-        <a href="/tags/Scrapy/">Scrapy</a>
+        <a href="/tags/scrapy/">scrapy</a>
       
         
           /
@@ -145,7 +145,7 @@ Python爬虫在处理由Javascript动态生成...">
       
     </p>
     
-    <p>之前一直在做Scrapy中关于网页动态内容的获取，主要目标是想获得javascript渲染后的网页html源码。<br>在转向使用ghost.py来做脚本解析之前的挖坑爬坑过程中，我已经造访过我所知的大大小小各种论坛、博客以及贴吧和知乎。其中有大方向上指导意义的有知乎里的相关问题：</p>
+    <p>之前一直在做scrapy中关于网页动态内容的获取，主要目标是想获得javascript渲染后的网页html源码。<br>在转向使用ghost.py来做脚本解析之前的挖坑爬坑过程中，我已经造访过我所知的大大小小各种论坛、博客以及贴吧和知乎。其中有大方向上指导意义的有知乎里的相关问题：</p>
 <ul>
 <li><a href="https://www.zhihu.com/question/21471960" target="_blank" rel="external">Python 爬虫如何获取 JS 生成的 URL 和网页内容？</a></li>
 <li><a href="https://www.zhihu.com/question/36450326" target="_blank" rel="external">Python爬虫在处理由Javascript动态生成的页面时有哪些解决方案？</a></li>
@@ -156,10 +156,10 @@ Python爬虫在处理由Javascript动态生成...">
 </ul>
 <p>上述几个干货里提到的方法，我基本都去了解了一下，也照着其中的几个方向挖过坑，过些时间我把我在这方面爬的所有坑都总结到一篇博客里。</p>
 <p>ghost.py算是我掉坑里时间最长的，也是差点就成功的一个，到现在也弃了，弃的原因日后再说。其实，用ghost.py是在PyQt4的基础上转过去的，ghost.py是对<strong>PyQt4</strong>或者<strong>PySide</strong>的一个封装，需要安装其中一个才能运行。</p>
-<h1 id="PySide"><a href="#PySide" class="headerlink" title="PySide"></a>PySide</h1><p>当然挖坑的第一步就是安装环境了，win7上安装简便得多，但到linux下就没那么舒服了。<br>下面是我在CentOS 6.5和python2.7.11的环境上安装Scrapy、PySide和Ghost.py过程中查到的有用资料的整合。如嫌下面的字太小，可戳此PDF<a href="http://tripleday.github.io/uploads/pdf/CentOS-scrapy-ghost.py.pdf">源地址</a>。<br>
+<h1 id="PySide"><a href="#PySide" class="headerlink" title="PySide"></a>PySide</h1><p>当然挖坑的第一步就是安装环境了，win7上安装简便得多，但到linux下就没那么舒服了。<br>下面是我在CentOS 6.5和python2.7.11的环境上安装scrapy、PySide和Ghost.py过程中查到的有用资料的整合。如嫌下面的字太小，可戳此PDF<a href="http://tripleday.cn/uploads/pdf/CentOS-scrapy-ghost.py.pdf" target="_blank" rel="external">源地址</a>。<br>
 
 	<div class="row">
-	  <iframe src="http://nagland.github.io/viewer/web/viewer.html?val=http://tripleday.github.io/uploads/pdf/CentOS-scrapy-ghost.py.pdf" style="width:100%; height:900px"></iframe>
+    <embed src="http://tripleday.github.io/uploads/pdf/CentOS-scrapy-ghost.py.pdf" width="100%" height="550" type="application/pdf">
 	</div>
 
 
@@ -173,10 +173,10 @@ Python爬虫在处理由Javascript动态生成...">
 
   </article>
   <div class="random-toc-area">
-  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
-  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
   <div class="random-toc">
-    <h2>目录</h2>
+    <h2>Table of Content</h2>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PySide"><span class="toc-text">PySide</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#PyQt4"><span class="toc-text">PyQt4</span></a></li></ol>
   </div>
 </div>
@@ -184,13 +184,13 @@ Python爬虫在处理由Javascript动态生成...">
   
 <nav id="pagination">
   
-    <a href="/2016/06/29/zhihu-link/" class="prev">&larr; 上一篇 基于Neo4j的知乎关系爬虫</a>
+    <a href="/2016/06/29/zhihu-link/" class="prev">&larr; Prev post 基于Neo4j的知乎关系爬虫</a>
   
 
   
 
   
-    <a href="/2016/06/12/hello-world/" class="next">下一篇 Hello World &rarr;</a>
+    <a href="/2016/06/12/hello-world/" class="next">Next post Hello World &rarr;</a>
   
 </nav>
 
@@ -200,9 +200,9 @@ Python爬虫在处理由Javascript动态生成...">
 
 
       
-      <div class="ds-thread" data-thread-key="2016/06/16/centos-scrapy-ghost.py/" data-title="CentOS 6.5 下scrapy与ghost.py的安装干货" data-url="http://tripleday.github.io/2016/06/16/centos-scrapy-ghost.py/"></div>
       
       
+      <div id="disqus_thread"></div>
       
     </div>
   </div>
@@ -219,18 +219,29 @@ Python爬虫在处理由Javascript动态生成...">
 
 </div>
 
-  <script type="text/javascript">
-var duoshuoQuery = {short_name:"tripleday"};
-(function() {
-  var ds = document.createElement('script');
-  ds.type = 'text/javascript';ds.async = true;
-  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-  ds.charset = 'UTF-8';
-  (document.getElementsByTagName('head')[0] 
-   || document.getElementsByTagName('body')[0]).appendChild(ds);
+
+  <div id="disqus_thread"></div>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//tripleday.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
 })();
 </script>
-
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
 <div id="user-card">
@@ -249,7 +260,7 @@ var duoshuoQuery = {short_name:"tripleday"};
     </li>
   
     <li>
-      <a href="https://www.zhihu.com/people/wu-hao-tian-73">
+      <a href="https://www.zhihu.com/people/tripleday">
         
           <i class="icon iconfont zhihu">&#xe60b;</i>
         

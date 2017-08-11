@@ -6,7 +6,7 @@
 
 
 <!doctype html>
-<html lang="">
+<html lang="English">
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@
 受github上一个前人的爬虫项目的指导，我学习了里面使用Graphite监控的部分，在这篇博客里把我在安装和使用中遇到的问题全部记录下来。
 Graphite简介Graphite是一个Pytho...">
   
-  <title>CentOS下使用Graphite监测Scrapy [ tripleday ]</title>
+  <title>CentOS下使用Graphite监测scrapy [ tripleday ]</title>
   
   
     <link rel="shortcut icon" href="/favicon.ico">
@@ -88,14 +88,14 @@ Graphite简介Graphite是一个Pytho...">
       
       
   <article id="post">
-    <h1>CentOS下使用Graphite监测Scrapy</h1>
+    <h1>CentOS下使用Graphite监测scrapy</h1>
     <p class="page-title-sub">
-      <span id = "post-title-date">撰写于 2016-10-06</span>
+      <span id = "post-title-date">Created at 2016-10-06</span>
       
-        <span id = "post-title-updated">修改于 2016-10-08</span>
+        <span id = "post-title-updated">Updated at 2017-08-11</span>
       
       
-      <span id = "post-title-categories">分类
+      <span id = "post-title-categories">Category
       
       
         
@@ -106,7 +106,7 @@ Graphite简介Graphite是一个Pytho...">
       
       
       <span id = "post-title-tags">
-      标签
+      Tag
       
       
         
@@ -117,7 +117,7 @@ Graphite简介Graphite是一个Pytho...">
           /
         
         
-        <a href="/tags/Scrapy/">Scrapy</a>
+        <a href="/tags/scrapy/">scrapy</a>
       
         
           /
@@ -178,7 +178,7 @@ Graphite简介Graphite是一个Pytho...">
 <li><a href="https://github.com/springside/springside4/wiki/Graphite" target="_blank" rel="external">Graphite</a></li>
 <li><a href="http://m.linuxeden.com/wap.php?action=article&amp;id=159746" target="_blank" rel="external">Graphite监控新手入门 </a></li>
 </ul>
-<h1 id="Graphite与Scrapy的结合"><a href="#Graphite与Scrapy的结合" class="headerlink" title="Graphite与Scrapy的结合"></a>Graphite与Scrapy的结合</h1><p>结合的方法详见原作者项目中<a href="https://github.com/gnemoug/distribute_crawler/blob/master/woaidu_crawler/woaidu_crawler/statscol/graphite.py" target="_blank" rel="external">graphite.py</a>文件中的注释，我总结为一下几点：</p>
+<h1 id="Graphite与scrapy的结合"><a href="#Graphite与scrapy的结合" class="headerlink" title="Graphite与scrapy的结合"></a>Graphite与scrapy的结合</h1><p>结合的方法详见原作者项目中<a href="https://github.com/gnemoug/distribute_crawler/blob/master/woaidu_crawler/woaidu_crawler/statscol/graphite.py" target="_blank" rel="external">graphite.py</a>文件中的注释，我总结为一下几点：</p>
 <ul>
 <li>把<code>/opt/graphite/webapp/content/js/composer_widgets.js</code>文件中<code>toggleAutoRefresh</code>函数里的interval变量从60改为1。</li>
 <li><p>在配置文件<code>storage-aggregation.conf</code>里添加</p>
@@ -187,9 +187,9 @@ Graphite简介Graphite是一个Pytho...">
 <li><p>在爬虫的配置文件<code>setting.py</code>里添加</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">STATS_CLASS = <span class="string">'scrapygraphite.GraphiteStatsCollector'</span></span><br><span class="line">GRAPHITE_HOST = <span class="string">'127.0.0.1'</span></span><br><span class="line">GRAPHITE_PORT = <span class="number">2003</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p>后两点是我自己的修改。<br>Scrapy本身提供的状态记录偏少，且缺乏实时的速度信息，都是不断增长式的总和记录。我想让Scrapy能够定时发送pages的抓取速度和item的生成速度给Graphite，所以我在Scrapy源码的<code>scrapy/extensions/logstats.py</code>文件中添加了两个状态变量的发送。</p>
+<li><p>后两点是我自己的修改。<br>scrapy本身提供的状态记录偏少，且缺乏实时的速度信息，都是不断增长式的总和记录。我想让scrapy能够定时发送pages的抓取速度和item的生成速度给Graphite，所以我在scrapy源码的<code>scrapy/extensions/logstats.py</code>文件中添加了两个状态变量的发送。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spider_opened</span><span class="params">(self, spider)</span>:</span></span><br><span class="line">    self.pagesprev = <span class="number">0</span></span><br><span class="line">    self.itemsprev = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    self.task = task.LoopingCall(self.log, spider)</span><br><span class="line">    self.task.start(self.interval)</span><br><span class="line"></span><br><span class="line">    self.stats.set_value(<span class="string">'pages_min'</span>, <span class="number">0</span>, spider=spider)</span><br><span class="line">    self.stats.set_value(<span class="string">'items_min'</span>, <span class="number">0</span>, spider=spider)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">log</span><span class="params">(self, spider)</span>:</span></span><br><span class="line">    items = self.stats.get_value(<span class="string">'item_scraped_count'</span>, <span class="number">0</span>)</span><br><span class="line">    pages = self.stats.get_value(<span class="string">'response_received_count'</span>, <span class="number">0</span>)</span><br><span class="line">    irate = (items - self.itemsprev) * self.multiplier</span><br><span class="line">    prate = (pages - self.pagesprev) * self.multiplier</span><br><span class="line">    self.pagesprev, self.itemsprev = pages, items</span><br><span class="line"></span><br><span class="line">    msg = (<span class="string">"Crawled %(pages)d pages (at %(pagerate)d pages/min), "</span></span><br><span class="line">           <span class="string">"scraped %(items)d items (at %(itemrate)d items/min)"</span>)</span><br><span class="line">    log_args = &#123;<span class="string">'pages'</span>: pages, <span class="string">'pagerate'</span>: prate,</span><br><span class="line">                <span class="string">'items'</span>: items, <span class="string">'itemrate'</span>: irate&#125;</span><br><span class="line">    logger.info(msg, log_args, extra=&#123;<span class="string">'spider'</span>: spider&#125;)</span><br><span class="line">    self.stats.set_value(<span class="string">'pages_min'</span>, prate, spider=spider)</span><br><span class="line">    self.stats.set_value(<span class="string">'items_min'</span>, irate, spider=spider)</span><br><span class="line">    states = self.stats.get_stats()</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> states:</span><br><span class="line">        self.stats._set_value(key, states[key], spider=spider)</span><br></pre></td></tr></table></figure>
-<p>这里的log函数每隔interval的秒数就会执行一次，interval的值可以在setting里配置<code>LOGSTATS_INTERVAL</code>的值。因为Scrapy里的状态值很多是在增长时才会调用inc_value去加一改变大小，数据不增长就不会变，也不会去发送给Graphite。所以我在定时执行的log函数里强行再去发送一下数据，不管值有没有改变，即最后的三行代码。虽然我感觉在Graphite的显示里这样做好像并没有什么效果。</p>
+<p>这里的log函数每隔interval的秒数就会执行一次，interval的值可以在setting里配置<code>LOGSTATS_INTERVAL</code>的值。因为scrapy里的状态值很多是在增长时才会调用inc_value去加一改变大小，数据不增长就不会变，也不会去发送给Graphite。所以我在定时执行的log函数里强行再去发送一下数据，不管值有没有改变，即最后的三行代码。虽然我感觉在Graphite的显示里这样做好像并没有什么效果。</p>
 </li>
 <li><p>在数据的分布定义storage-schemas.conf中，默认是按60秒一个数据的方式，存一天的数据，一天前的数据就没了。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[default_1min_for_1day]</span><br><span class="line">pattern = .*</span><br><span class="line">retentions = 60s:1d</span><br></pre></td></tr></table></figure>
@@ -200,11 +200,11 @@ Graphite简介Graphite是一个Pytho...">
 
   </article>
   <div class="random-toc-area">
-  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
-  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
   <div class="random-toc">
-    <h2>目录</h2>
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Graphite简介"><span class="toc-text">Graphite简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Graphite安装"><span class="toc-text">Graphite安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Graphite与Scrapy的结合"><span class="toc-text">Graphite与Scrapy的结合</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#最后"><span class="toc-text">最后</span></a></li></ol>
+    <h2>Table of Content</h2>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Graphite简介"><span class="toc-text">Graphite简介</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Graphite安装"><span class="toc-text">Graphite安装</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Graphite与scrapy的结合"><span class="toc-text">Graphite与scrapy的结合</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#最后"><span class="toc-text">最后</span></a></li></ol>
   </div>
 </div>
 
@@ -215,7 +215,7 @@ Graphite简介Graphite是一个Pytho...">
   
 
   
-    <a href="/2016/07/28/hmm4nlp/" class="next">下一篇 NLP中使用HMM进行tag、seg和ner &rarr;</a>
+    <a href="/2016/07/28/hmm4nlp/" class="next">Next post NLP中使用HMM进行tag、seg和ner &rarr;</a>
   
 </nav>
 
@@ -225,9 +225,9 @@ Graphite简介Graphite是一个Pytho...">
 
 
       
-      <div class="ds-thread" data-thread-key="2016/10/06/graphite/" data-title="CentOS下使用Graphite监测Scrapy" data-url="http://tripleday.github.io/2016/10/06/graphite/"></div>
       
       
+      <div id="disqus_thread"></div>
       
     </div>
   </div>
@@ -244,18 +244,29 @@ Graphite简介Graphite是一个Pytho...">
 
 </div>
 
-  <script type="text/javascript">
-var duoshuoQuery = {short_name:"tripleday"};
-(function() {
-  var ds = document.createElement('script');
-  ds.type = 'text/javascript';ds.async = true;
-  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-  ds.charset = 'UTF-8';
-  (document.getElementsByTagName('head')[0] 
-   || document.getElementsByTagName('body')[0]).appendChild(ds);
+
+  <div id="disqus_thread"></div>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//tripleday.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
 })();
 </script>
-
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
 <div id="user-card">
@@ -274,7 +285,7 @@ var duoshuoQuery = {short_name:"tripleday"};
     </li>
   
     <li>
-      <a href="https://www.zhihu.com/people/wu-hao-tian-73">
+      <a href="https://www.zhihu.com/people/tripleday">
         
           <i class="icon iconfont zhihu">&#xe60b;</i>
         

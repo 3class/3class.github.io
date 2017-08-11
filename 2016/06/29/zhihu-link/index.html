@@ -6,7 +6,7 @@
 
 
 <!doctype html>
-<html lang="">
+<html lang="English">
 <head>
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -97,12 +97,12 @@
   <article id="post">
     <h1>基于Neo4j的知乎关系爬虫</h1>
     <p class="page-title-sub">
-      <span id = "post-title-date">撰写于 2016-06-29</span>
+      <span id = "post-title-date">Created at 2016-06-29</span>
       
-        <span id = "post-title-updated">修改于 2016-07-20</span>
+        <span id = "post-title-updated">Updated at 2016-07-20</span>
       
       
-      <span id = "post-title-categories">分类
+      <span id = "post-title-categories">Category
       
       
         
@@ -113,7 +113,7 @@
       
       
       <span id = "post-title-tags">
-      标签
+      Tag
       
       
         
@@ -174,10 +174,10 @@
 
   </article>
   <div class="random-toc-area">
-  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">显示目录</button>
-  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
+  <button class="btn-hide-toc btn-hide-toc-show" style="display: none" onclick="TOCToggle()">Show TOC</button>
+  <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">Hide TOC</button>
   <div class="random-toc">
-    <h2>目录</h2>
+    <h2>Table of Content</h2>
     <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#环境安装"><span class="toc-text">环境安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MongoDB"><span class="toc-text">MongoDB</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Neo4j"><span class="toc-text">Neo4j</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python依赖"><span class="toc-text">python依赖</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#爬虫概要"><span class="toc-text">爬虫概要</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#目的"><span class="toc-text">目的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#开发思路"><span class="toc-text">开发思路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代码相关"><span class="toc-text">代码相关</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#爬取结果"><span class="toc-text">爬取结果</span></a></li></ol>
   </div>
 </div>
@@ -185,13 +185,13 @@
   
 <nav id="pagination">
   
-    <a href="/2016/07/14/hmm-memm-crf/" class="prev">&larr; 上一篇 HMM、MEMM和CRF的学习总结</a>
+    <a href="/2016/07/14/hmm-memm-crf/" class="prev">&larr; Prev post HMM、MEMM和CRF的学习总结</a>
   
 
   
 
   
-    <a href="/2016/06/16/centos-scrapy-ghost.py/" class="next">下一篇 CentOS 6.5 下scrapy与ghost.py的安装干货 &rarr;</a>
+    <a href="/2016/06/16/centos-scrapy-ghost.py/" class="next">Next post CentOS 6.5 下scrapy与ghost.py的安装干货 &rarr;</a>
   
 </nav>
 
@@ -201,9 +201,9 @@
 
 
       
-      <div class="ds-thread" data-thread-key="2016/06/29/zhihu-link/" data-title="基于Neo4j的知乎关系爬虫" data-url="http://tripleday.github.io/2016/06/29/zhihu-link/"></div>
       
       
+      <div id="disqus_thread"></div>
       
     </div>
   </div>
@@ -220,18 +220,29 @@
 
 </div>
 
-  <script type="text/javascript">
-var duoshuoQuery = {short_name:"tripleday"};
-(function() {
-  var ds = document.createElement('script');
-  ds.type = 'text/javascript';ds.async = true;
-  ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-  ds.charset = 'UTF-8';
-  (document.getElementsByTagName('head')[0] 
-   || document.getElementsByTagName('body')[0]).appendChild(ds);
+
+  <div id="disqus_thread"></div>
+<script>
+/**
+* RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+* LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL; // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+
+s.src = '//tripleday.disqus.com/embed.js';
+
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
 })();
 </script>
-
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
 <div id="user-card">
@@ -250,7 +261,7 @@ var duoshuoQuery = {short_name:"tripleday"};
     </li>
   
     <li>
-      <a href="https://www.zhihu.com/people/wu-hao-tian-73">
+      <a href="https://www.zhihu.com/people/tripleday">
         
           <i class="icon iconfont zhihu">&#xe60b;</i>
         
