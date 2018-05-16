@@ -11,14 +11,13 @@
   <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <meta name="author" content="Haotian Wu">
+  <meta name="author" content="Haotian WU">
   
   
   
   
-    <meta name="description" content="一直在做分布式爬虫的项目。项目都是要验收的，给领导验收就需要一些可视化的呈现，因为爬虫本身就算你采用了各种了不得的技术，命令行一启动什么都没有的看，控制台的输出和日志不是程序员估计也不会有什么兴趣。
-受github上一个前人的爬虫项目的指导，我学习了里面使用Graphite监控的部分，在这篇博客里把我在安装和使用中遇到的问题全部记录下来。
-Graphite简介Graphite是一个Pytho...">
+    <meta name="description" content="受github上一个前人的爬虫项目的指导，我学习了里面使用Graphite监控的部分，在这篇博客里把我在安装和使用中遇到的问题全部记录下来。
+Graphite简介Graphite是一个Python编写的企业级开源监控工具，采用django框架，用来收集服务器所有的即时状态，用户请求信息，Memcached命中率，RabbitMQ消息服务器的状态，操作系统的负载状态。Graphite服务器大约...">
   
   <title>CentOS下使用Graphite监测scrapy [ tripleday ]</title>
   
@@ -101,7 +100,7 @@ Graphite简介Graphite是一个Pytho...">
     <p class="page-title-sub">
       <span id = "post-title-date">Created at 2016-10-06</span>
       
-        <span id = "post-title-updated">Updated at 2017-08-11</span>
+        <span id = "post-title-updated">Updated at 2018-05-12</span>
       
       
       <span id = "post-title-categories">Category
@@ -120,7 +119,7 @@ Graphite简介Graphite是一个Pytho...">
       
         
         
-        <a href="/tags/Graphite/">Graphite</a>
+        <a href="/tags/CentOS/">CentOS</a>
       
         
           /
@@ -132,21 +131,20 @@ Graphite简介Graphite是一个Pytho...">
           /
         
         
-        <a href="/tags/CentOS/">CentOS</a>
+        <a href="/tags/python/">python</a>
       
         
           /
         
         
-        <a href="/tags/python/">python</a>
+        <a href="/tags/Graphite/">Graphite</a>
       
       </span>
       
     </p>
     
-    <p>一直在做分布式爬虫的项目。项目都是要验收的，给领导验收就需要一些可视化的呈现，因为爬虫本身就算你采用了各种了不得的技术，命令行一启动什么都没有的看，控制台的输出和日志不是程序员估计也不会有什么兴趣。</p>
-<p>受github上一个前人的<a href="https://github.com/gnemoug/distribute_crawler" target="_blank" rel="external">爬虫项目</a>的指导，我学习了里面使用Graphite监控的部分，在这篇博客里把我在安装和使用中遇到的问题全部记录下来。</p>
-<h1 id="Graphite简介"><a href="#Graphite简介" class="headerlink" title="Graphite简介"></a>Graphite简介</h1><p>Graphite是一个Python编写的企业级开源监控工具，采用django框架，用来收集服务器所有的即时状态，用户请求信息，Memcached命中率,RabbitMQ消息服务器的状态，操作系统的负载状态。Graphite服务器大约每分钟需要有4800次的跟新操作，它采用简单的文本协议和绘图功能，可以方便的使用在任何操作系统上。Graphite 自己本身并不收集具体的数据，这些数据收集的具体工作通常由第三方工具或插件完成（如 Ganglia, collectd, statsd, Collectl 等)。</p>
+    <p>受github上一个前人的<a href="https://github.com/gnemoug/distribute_crawler" target="_blank" rel="external">爬虫项目</a>的指导，我学习了里面使用Graphite监控的部分，在这篇博客里把我在安装和使用中遇到的问题全部记录下来。</p>
+<h1 id="Graphite简介"><a href="#Graphite简介" class="headerlink" title="Graphite简介"></a>Graphite简介</h1><p>Graphite是一个Python编写的企业级开源监控工具，采用django框架，用来收集服务器所有的即时状态，用户请求信息，Memcached命中率，RabbitMQ消息服务器的状态，操作系统的负载状态。Graphite服务器大约每分钟需要有4800次的跟新操作，它采用简单的文本协议和绘图功能，可以方便的使用在任何操作系统上。Graphite自己本身并不收集具体的数据，这些数据收集的具体工作通常由第三方工具或插件完成（如 Ganglia, collectd, statsd, Collectl 等)。</p>
 <p>简单来说，Graphite主要做两件事情：</p>
 <ul>
 <li>实时监控第三方工具传来的数据</li>
@@ -245,7 +243,7 @@ Graphite简介Graphite是一个Pytho...">
 
   <div id="bottom-outer">
     <div id="bottom-inner">
-      Site by Haotian Wu using
+      Site by Haotian WU using
       <a href="http://hexo.io">Hexo</a> & <a href="https://github.com/stiekel/hexo-theme-random">Random</a>
       <br>
       
@@ -312,7 +310,7 @@ s.setAttribute('data-timestamp', +new Date());
     </li>
   
     <li>
-      <a href="https://twitter.com/kjhn15">
+      <a href="https://twitter.com/tripleday3">
         
           <i class="icon iconfont twitter">&#xe600;</i>
         
