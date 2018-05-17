@@ -4,6 +4,32 @@
   
     
     <entry>
+      <title><![CDATA[500px的高清图片抓取和定时微博发送]]></title>
+      <url>http://tripleday.github.io/2017/08/20/500px/</url>
+      <content type="html"><![CDATA[<h1 id="Fetch"><a href="#Fetch" class="headerlink" title="Fetch"></a>Fetch</h1><p>500px网站上的照片由于版权保护等原因是无法下载的，图片右键只会显示这是谁的照片，没法保存。</p>
+<p>但是上面的图片真的拍得好棒，让人心生歹念。其实在浏览该站的时候，图片都是动态加载的，我们每次向下滚动鼠标时，网页会向服务器请求获得一组照片的数据，我们只要盯着请求的格式和返回的json包就可以提取出图片的各项信息。</p>
+<p><img src="/uploads/img/20170820/json.png" alt="返回的json包示例"></p>
+<p>上图中是请求得到的一个photo的详细信息，包括name、camera、taken place等等，最重要的高清图片URL是在images列表里：</p>
+<p><img src="/uploads/img/20170820/images.png" alt="photo URLs"></p>
+<p>每个列表里有十个不同size的URL，我们获取size 2048的URL即可直接访问高清图片并下载。</p>
+<h1 id="Post"><a href="#Post" class="headerlink" title="Post"></a>Post</h1><p>我们获得下载的图片后可以每隔一小时发送一张图片到微博。这里需要申请一个微博APP，之后调用微博的API即可发送。微博的SDK我没有使用官方的python实现，而是采用了一个更加简洁干净的版本<a href="https://github.com/lxyu/weibo" target="_blank" rel="external">weibo</a>，感谢作者的分享。没采用官方的API是因为貌似官方版本的APP授权在一定时间后会失效，需要定时手动更新授权，但简洁版本只需要提供用户名和密码就可以永久授权，比较方便。</p>
+<p>微博发图的效果如下：<br><img src="/uploads/img/20170820/weibo.png" alt="微博效果"></p>
+<p>由于发的是好友圈，可能要互粉之后才能看到，我的微博就在左上角。</p>
+<p>fetch和post的代码都在<a href="https://github.com/tripleday/500px_photos" target="_blank" rel="external">500px_photos</a>。</p>
+<h1 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h1><ul>
+<li><p>需要在本机建立名为<strong>500px</strong>的MongoDB数据库，fetch和post都需要用到，而图片文件保存到文件系统即可。</p>
+</li>
+<li><p>我抓取500px时是带着cookie的，但貌似不带也可以爬，没有进一步验证。</p>
+</li>
+<li><p>我每天抓取一次，每次抓三个部分popular、editor和stock（这个在2018.05时看貌似变成fresh了？），每部分抓20轮，每轮50张。</p>
+</li>
+<li><p>由于图片版权之类的原因，这些东西仅作学习交流，切勿商用。</p>
+</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[基于scrapy的动态网页采集方案总结]]></title>
       <url>http://tripleday.github.io/2017/05/12/dynamic-crawling/</url>
       <content type="html"><![CDATA[<p>基于scrapy的动态网页采集一直是个难点，而且如果想达到工程级别的抓取，需要有个高效率的解决方案。我列出了几个曾经尝试过的方案和它们的特点。</p>
@@ -361,25 +387,13 @@
 
 <h1 id="iFrame-Test"><a href="#iFrame-Test" class="headerlink" title="iFrame Test:"></a>iFrame Test:</h1><iframe src="http://www.seu.edu.cn/english/main.htm" width="100%" height="500" frameborder="0" allowfullscreen></iframe>
 <h1 id="Picture-Test"><a href="#Picture-Test" class="headerlink" title="Picture Test:"></a>Picture Test:</h1><p><img src="/uploads/img/20160612/facebook.jpg" alt="Facebook"></p>
-<h1 id="Youtube-Test"><a href="#Youtube-Test" class="headerlink" title="Youtube Test:"></a>Youtube Test:</h1><div class="video-container"><iframe src="//www.youtube.com/embed/https://youtu.be/QBJxGklvHRg" frameborder="0" allowfullscreen></iframe></div>
+<h1 id="Youtube-Test"><a href="#Youtube-Test" class="headerlink" title="Youtube Test:"></a>Youtube Test:</h1><div class="video-container"><iframe src="//www.youtube.com/embed/https://youtu.be/U14reeYLYBc" frameborder="0" allowfullscreen></iframe></div>
 <h1 id="Youku-Test"><a href="#Youku-Test" class="headerlink" title="Youku Test:"></a>Youku Test:</h1><div class="video-container"><iframe height="480" width="100%" src="http://player.youku.com/embed/XMTU3NjExOTUwMA==" frameborder="0" allowfullscreen></iframe></div>
 ]]></content>
     </entry>
     
   
   
-    
-    <entry>
-      <title><![CDATA[categories]]></title>
-      <url>http://tripleday.github.io/categories/index.html</url>
-      <content type="html"></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[tags]]></title>
-      <url>http://tripleday.github.io/tags/index.html</url>
-      <content type="html"></content>
-    </entry>
     
     <entry>
       <title><![CDATA[About]]></title>
@@ -402,6 +416,18 @@
 <p>The Base64 code of my QQ number is:<br><code>MTc3MjQ4MzM0Mg==</code></p>
 <h1 id="Links"><a href="#Links" class="headerlink" title="Links"></a>Links</h1><p><a href="http://1024ss.com" target="_blank" rel="external">1024ss.com</a>: 1024 Search Engine<br><a href="http://heimingx.cn" target="_blank" rel="external">Heiming’s Blog</a>: Haiming Xu’s blog</p>
 ]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[categories]]></title>
+      <url>http://tripleday.github.io/categories/index.html</url>
+      <content type="html"></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[tags]]></title>
+      <url>http://tripleday.github.io/tags/index.html</url>
+      <content type="html"></content>
     </entry>
     
   

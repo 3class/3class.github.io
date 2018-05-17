@@ -16,10 +16,12 @@
   
   
   
-    <meta name="description" content="忽然想玩这个图片转化的把戏，是因为之前在知乎上看到一个专栏里用到了下面这个图：当然，那篇专栏没过几小时就被和谐了。我在网上貌似搜到了这个图片转emoji mosaic的网址，供大家戏耍：Emoji Mosaic。
-做这个转emoji马赛克应该蛮复杂的，当然它的源码也很容易找到：ericandrewlewis/emoji-mosaic。但我纯属娱乐又不想花功夫，于是就在晚上学了学把图片转为字符...">
+    <meta name="description" content="Fetch500px网站上的照片由于版权保护等原因是无法下载的，图片右键只会显示这是谁的照片，没法保存。
+但是上面的图片真的拍得好棒，让人心生歹念。其实在浏览该站的时候，图片都是动态加载的，我们每次向下滚动鼠标时，网页会向服务器请求获得一组照片的数据，我们只要盯着请求的格式和返回的json包就可以提取出图片的各项信息。
+
+上图中是请求得到的一个photo的详细信息，包括name、camera...">
   
-  <title>使用python将图片转化为字符画 [ tripleday ]</title>
+  <title>500px的高清图片抓取和定时微博发送 [ tripleday ]</title>
   
   
     <link rel="shortcut icon" href="/favicon.ico">
@@ -38,22 +40,13 @@
 <body>
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="side-navigate hide-area">
   
-    <div class="item prev">
-      <a href="/2016/07/28/hmm4nlp/">
-        <div class="item-icon"></div>
-      </a>
-      <div class="item-title">
-        NLP中使用HMM进行tag、seg和ner
-      </div>
-    </div>
-  
   
     <div class="item next">
-      <a href="/2016/07/14/hmm-memm-crf/">
+      <a href="/2017/05/12/dynamic-crawling/">
         <div class="item-icon"></div>
       </a>
       <div class="item-title">
-        HMM、MEMM和CRF的学习总结
+        基于scrapy的动态网页采集方案总结
       </div>
     </div>
   
@@ -96,11 +89,11 @@
       
       
   <article id="post">
-    <h1>使用python将图片转化为字符画</h1>
+    <h1>500px的高清图片抓取和定时微博发送</h1>
     <p class="page-title-sub">
-      <span id = "post-title-date">撰写于 2016-07-20</span>
+      <span id = "post-title-date">撰写于 2017-08-20</span>
       
-        <span id = "post-title-updated">修改于 2016-07-20</span>
+        <span id = "post-title-updated">修改于 2018-05-17</span>
       
       
       <span id = "post-title-categories">分类
@@ -108,7 +101,7 @@
       
         
         
-        <a href="/categories/Fun/">Fun</a>
+        <a href="/categories/Crawler/">Crawler</a>
       
       </span>
       
@@ -119,33 +112,44 @@
       
         
         
-        <a href="/tags/python/">python</a>
+        <a href="/tags/500px/">500px</a>
       
         
           /
         
         
-        <a href="/tags/PIL/">PIL</a>
+        <a href="/tags/weibo/">weibo</a>
+      
+        
+          /
+        
+        
+        <a href="/tags/python/">python</a>
       
       </span>
       
     </p>
     
-      <div class="center-title">
-
-  <a class="fancybox-thumb" rel="fancybox-thumb" href="/uploads/img/20160720/cover.png">
-    <img src="/uploads/img/20160720/cover.png" />
-  </a>
-
-</div>
-
-    
-    <p>忽然想玩这个图片转化的把戏，是因为之前在知乎上看到一个专栏里用到了下面这个图：<br><img src="/uploads/img/20160720/mo.jpg" alt="拿衣服"><br>当然，那篇专栏没过几小时就被和谐了。我在网上貌似搜到了这个图片转emoji mosaic的网址，供大家戏耍：<a href="http://ericandrewlewis.github.io/emoji-mosaic/" target="_blank" rel="external">Emoji Mosaic</a>。</p>
-<p>做这个转emoji马赛克应该蛮复杂的，当然它的源码也很容易找到：<a href="https://github.com/ericandrewlewis/emoji-mosaic" target="_blank" rel="external">ericandrewlewis/emoji-mosaic</a>。但我纯属娱乐又不想花功夫，于是就在晚上学了学把图片转为字符图的代码玩玩。</p>
-<p>代码很简单：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#-*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"> </span><br><span class="line">grey2char = [<span class="string">'@'</span>,<span class="string">'#'</span>,<span class="string">'$'</span>,<span class="string">'%'</span>,<span class="string">'&amp;'</span>,<span class="string">'?'</span>,<span class="string">'*'</span>,<span class="string">'o'</span>,<span class="string">'/'</span>,<span class="string">'&#123;'</span>,<span class="string">'['</span>,<span class="string">'('</span>,<span class="string">'|'</span>,<span class="string">'!'</span>,<span class="string">'^'</span>,<span class="string">'~'</span>,<span class="string">'-'</span>,<span class="string">'_'</span>,<span class="string">':'</span>,<span class="string">';'</span>,<span class="string">','</span>,<span class="string">'.'</span>,<span class="string">'`'</span>,<span class="string">' '</span>]</span><br><span class="line">count = len(grey2char)</span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">toText</span><span class="params">(image_file)</span>:</span></span><br><span class="line">   image_file = image_file.convert(<span class="string">'L'</span>)<span class="comment"># 转灰度</span></span><br><span class="line">   result = <span class="string">''</span><span class="comment"># 储存字符串</span></span><br><span class="line">   <span class="keyword">for</span> h <span class="keyword">in</span> range(<span class="number">0</span>,  image_file.size[<span class="number">1</span>]):<span class="comment"># height</span></span><br><span class="line">      <span class="keyword">for</span> w <span class="keyword">in</span> range(<span class="number">0</span>, image_file.size[<span class="number">0</span>]):<span class="comment"># width</span></span><br><span class="line">         gray = image_file.getpixel((w,h))</span><br><span class="line">         result += grey2char[int(gray/(<span class="number">255</span>/(count<span class="number">-1</span>)))]</span><br><span class="line">      result += <span class="string">'\r\n'</span></span><br><span class="line">   <span class="keyword">return</span> result</span><br><span class="line"> </span><br><span class="line">image_file = Image.open(<span class="string">"input.jpg"</span>)<span class="comment"># 打开图片</span></span><br><span class="line">image_file = image_file.resize((int(image_file.size[<span class="number">0</span>]), int(image_file.size[<span class="number">1</span>]*<span class="number">0.55</span>)))<span class="comment"># 调整图片大小</span></span><br><span class="line"> </span><br><span class="line">output = open(<span class="string">'output.txt'</span>,<span class="string">'w'</span>)</span><br><span class="line">output.write(toText(image_file))</span><br><span class="line">output.close()</span><br></pre></td></tr></table></figure></p>
-<p>需要注意的是要安装依赖PIL。</p>
-<p>原图：<br><img src="/uploads/img/20160720/input.jpg" alt=""></p>
-<p>字符图：<br><img src="/uploads/img/20160720/cover.png" alt=""></p>
+    <h1 id="Fetch"><a href="#Fetch" class="headerlink" title="Fetch"></a>Fetch</h1><p>500px网站上的照片由于版权保护等原因是无法下载的，图片右键只会显示这是谁的照片，没法保存。</p>
+<p>但是上面的图片真的拍得好棒，让人心生歹念。其实在浏览该站的时候，图片都是动态加载的，我们每次向下滚动鼠标时，网页会向服务器请求获得一组照片的数据，我们只要盯着请求的格式和返回的json包就可以提取出图片的各项信息。</p>
+<p><img src="/uploads/img/20170820/json.png" alt="返回的json包示例"></p>
+<p>上图中是请求得到的一个photo的详细信息，包括name、camera、taken place等等，最重要的高清图片URL是在images列表里：</p>
+<p><img src="/uploads/img/20170820/images.png" alt="photo URLs"></p>
+<p>每个列表里有十个不同size的URL，我们获取size 2048的URL即可直接访问高清图片并下载。</p>
+<h1 id="Post"><a href="#Post" class="headerlink" title="Post"></a>Post</h1><p>我们获得下载的图片后可以每隔一小时发送一张图片到微博。这里需要申请一个微博APP，之后调用微博的API即可发送。微博的SDK我没有使用官方的python实现，而是采用了一个更加简洁干净的版本<a href="https://github.com/lxyu/weibo" target="_blank" rel="external">weibo</a>，感谢作者的分享。没采用官方的API是因为貌似官方版本的APP授权在一定时间后会失效，需要定时手动更新授权，但简洁版本只需要提供用户名和密码就可以永久授权，比较方便。</p>
+<p>微博发图的效果如下：<br><img src="/uploads/img/20170820/weibo.png" alt="微博效果"></p>
+<p>由于发的是好友圈，可能要互粉之后才能看到，我的微博就在左上角。</p>
+<p>fetch和post的代码都在<a href="https://github.com/tripleday/500px_photos" target="_blank" rel="external">500px_photos</a>。</p>
+<h1 id="MISC"><a href="#MISC" class="headerlink" title="MISC"></a>MISC</h1><ul>
+<li><p>需要在本机建立名为<strong>500px</strong>的MongoDB数据库，fetch和post都需要用到，而图片文件保存到文件系统即可。</p>
+</li>
+<li><p>我抓取500px时是带着cookie的，但貌似不带也可以爬，没有进一步验证。</p>
+</li>
+<li><p>我每天抓取一次，每次抓三个部分popular、editor和stock（这个在2018.05时看貌似变成fresh了？），每部分抓20轮，每轮50张。</p>
+</li>
+<li><p>由于图片版权之类的原因，这些东西仅作学习交流，切勿商用。</p>
+</li>
+</ul>
 
   </article>
   <div class="random-toc-area">
@@ -153,20 +157,18 @@
   <button class="btn-hide-toc btn-hide-toc-hide" onclick="TOCToggle()">隐藏目录</button>
   <div class="random-toc">
     <h2>目录</h2>
-    
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Fetch"><span class="toc-text">Fetch</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Post"><span class="toc-text">Post</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MISC"><span class="toc-text">MISC</span></a></li></ol>
   </div>
 </div>
 
   
 <nav id="pagination">
   
-    <a href="/2016/07/28/hmm4nlp/" class="prev">&larr; 上一篇 NLP中使用HMM进行tag、seg和ner</a>
-  
 
   
 
   
-    <a href="/2016/07/14/hmm-memm-crf/" class="next">下一篇 HMM、MEMM和CRF的学习总结 &rarr;</a>
+    <a href="/2017/05/12/dynamic-crawling/" class="next">下一篇 基于scrapy的动态网页采集方案总结 &rarr;</a>
   
 </nav>
 
